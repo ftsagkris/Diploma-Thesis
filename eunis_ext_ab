@@ -1,0 +1,78 @@
+Uni<form>: A secretariat information system for managing course selection rules
+
+Filippos Tsagris1, Christos Sintoris1 and Nikolaos Avouris1
+1 University of Patras, Greece
+filippos@tsagkris.com, sintoris@upatras.gr, avouris@upatras.gr
+
+Abstract
+
+This work studies the development of a secretariat information system for universities. The implemented system is comprised of two main subsystems. The first is intended for the secretarial staff of a department, offering a set of graphical tools through which the department’s offered curricula can be described. These include semesters, specialization tracks, modules divided into groups, as well as sets of rules that dictate how the modules can be chosen by students. Given the curriculum, a rule checker is generated, which in turn, accepts students’ bi-annual module selection applications and examines whether they comply with the curriculum’s ruleset, informing students with appropriate error messages if errors occur in their application.
+
+
+1. Introduction
+
+Secretariat Information Systems (SIS) allow for the interaction of university students with the secretariat office of their department and which provide a big set of functions, enabling various types of interactions between students and the secretariat, such as certificate applications, graduation requirement checking, exam scores management etc. An important part of student interactions with the secretariat is comprised of the selection of modules for an upcoming semester. Complex curricula often allow for a selection out of a rich pool of modules, for which several rules might apply. The work presented here focuses on the tools required for describing and amending university curricula and ensuring that students’ applications are conforming to these curriculum rules. 
+
+Most SIS today do not offer a way to university staff for describing and amending curriculum rules that should apply to module selection. After inquiring major academic institutions in Greece (University of Patras, National Technical University of Athens, National Kapodistrian University of Athens), which all use different SIS, it was discovered that, to implement curricula updates, the staff had to contact the SIS software development team, resulting in a gap between the application domain experts, i.e. the curriculum ruleset designers, and the developers implementing it. A second observation concerns the design of the systems’ feedback, where the error messages were automatically generated and thus didn’t use simple and easily understood language, making it harder for students to locate faults in their module selection and submit a successful application to the system.
+
+
+2. Approach
+
+In the requirement gathering phase of this work, university curricula of major Greek Universities were analysed, including those of all the departments of the University of Patras (35) plus a small number of curricula of the NTUA (2) and the NKUA (2). This aided in the detection of the common attributes between a diverse set of rules, which lead to the drawing of a demarcation line between two types of ruleset systems. These will be referred to as module-centric and rule-centric.
+
+2.1 Module-centric approach 
+
+In the module-centric approach, the rules that condition module selection are directly linked to the actual modules. It is the most common way of designing curricula rulesets and it consists of a set of compulsory modules, elective modules and, optionally, a dissertation project. It can offer more than one scientific tracks, as well as define a cap on the maximum number of modules that can be selected.
+
+2.2 Rule-centric approach
+
+The rule-centric approach is differentiated by the high complexity of a subset of rules, which is usually confined to the specialization-tracks part of the curriculum. Its fundamental characteristic is that it poses a set of minimum requirements that must be met, for submission to be valid, trading the increased freedom offered to students for module selection with a highly complicated ruleset.
+
+2.3 Rule archetypes
+
+The analysis of existing rulesets led to the observation of patterns, based on which abstractions were made that lead to the definition of three archetypal forms of module selection rules.
+
+ Summation rule. The summation rule, which is very common in most rulesets, allows for the admeasurement of modules based on their quantitative characteristics, making possible the enforcement of rules concerning compulsory or elective modules, with optional lower and upper limits.
+
+ Module correlation rule. Two types of module correlations are identified, a) that of prerequisite modules, requiring that students have successfully passed one or more modules, before attending another, and b) that of corequisites, requiring the simultaneous attendance of two or more modules.
+
+ Limit rule. The final form requires that the sum of a quantitative characteristic of the total number of modules a student applies to during a semester, does not cross an upper limit, e.g. a student can apply to modules worth up to 45 ECTS in one semester. This rule may require that the modules in a student’s application follow a specific order, e.g. the student is required to apply for modules from older semesters they have not successfully passed, before applying for current semester modules, and vice versa.
+
+2.4 Basic architecture and functionality 
+
+Uni<form> offers two subsystems, one used by the secretarial staff for formatting and describing curriculum rulesets, and one for students to submit their semi-annual module attendance applications. On a technical level, both submissions to the system are done asynchronously, via AJAX (Garrett, 2005). More specifically, to save the curriculum, the full content of the DOM is sent, which includes the whole curriculum description in HTML format, exactly as formatted by the secretariat. The analysis is performed on the server side of the system, converting the submitted ruleset to a custom construct of objects. An advantage of this method is that when the curriculum formatting webpage is requested by the secretariat, the HTML file can be directly served with minimal rendering needs.
+
+Regarding the subsystem offered to students for submitting and checking module attendance applications, uni<form> offers the service through a REST API, thus allowing for its functionality to be offered through third-party environments that institutions may already use.
+
+
+3. Evaluation & Results 
+
+During the final stages of this work, a full evaluation of the two offered subsystems was made. The subsystem of the secretariat was tested using the rulesets of the curricula of all 35 undergraduate study programs offered by the departments of the University of Patras. Of those, uni<form> fully supports 29, while in the remaining 6, a few small complications appeared. The usability of the system was also evaluated using the heuristic evaluation technique with the popular set of Nielsen’s 10 empirical rules (Nielsen, 1995). It was found that due to the extensive use of scrolling for navigating in the system, sometimes editing different semesters can feel slow. The lack of an always visible marker could also trip the user in editing a different semester than the one desired. Targeted tooltips could be added for easier on-boarding of new users.
+
+Regarding the subsystem offered to students, two end-user involvement techniques were applied, the think aloud protocol (Lewis, 1982) followed by a semi-structured interview. Six users participated in the evaluation, with each one taking part in two scenarios, one as a 6th semester student and another as a graduand student. The main observation emerging from this process is that the overall evaluation was very positive. There was a complete match regarding their satisfaction with the targeted and accurate error messages and all users agreed that the system was by far easier to understand and use, than the corresponding one offered by their university.
+
+However, some user requests also came out of this process, mainly about a smart summation system, so that they don’t have to do mental calculations during the module selection process. It also became apparent through observation, that the same concerns noted earlier about the navigation and extensive scrolling requirements, apply here too.
+
+
+4. Conclusions
+
+The main goal of this work was the development of a system that bridges the gap between the design of a university curriculum and the implementation of a platform for checking students’ module selection applications. For this to be achieved, a great number of curricula from Greece’s major academic institutions were analysed. Uni<form> was designed based on the discoveries of this investigation. The derived system was evaluated through a user study. Its results showed that, while there is still room for improvement, uni<form> offers a lot of benefits, both to students and university secretarial staff.
+
+
+5. References
+
+Garrett, J. J. (2005, February). Ajax: A new approach to web applications. adaptive path, february 18. Retrieved 2020-07-13, from https://web.archive.org/web/20150910072359/http://adaptivepath.org/ ideas/ajax-new-approach-web-applications/ 
+
+Lewis, C. (1982). Using the” thinking-aloud” method in cognitive interface design. IBM TJ Watson Research Center Yorktown Heights, NY.
+
+Nielsen, J. (1995). 10 usability heuristics for user interface design. Nielsen Norman Group, 1(1).
+
+
+Author biographies
+
+Filippos Tsagris….
+s
+
+Christos Sintoris Christos Sintoris is Teaching and Research Associate ​ at the ​ Dept. of Electrical and Computer Engineering at the University of Patras. He has been a member of the University’s Human-Computer Interaction Group for over ten years. He has a Computer Science background and his research interests involve human-computer interaction, location-based mobile interaction.
+
+Prof. Avouris is the founder and head of HCI Group, and of the Interactive Technologies Lab of the University of Patras, GR. Prof Avouris has over 30 years of experience in industry and academia in Greece, UK and Italy, in the area of Human-computer interaction and design of interactive technologies. He is currently expert member of IFIP Technical Committee 13 on Human-Computer Interaction (HCI) and steering committee of INTERACT conference. He serves in the editorial board of Mobile Human-Computer Interaction Journal. 
